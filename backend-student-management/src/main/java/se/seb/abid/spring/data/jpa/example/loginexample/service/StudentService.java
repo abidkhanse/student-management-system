@@ -2,6 +2,7 @@ package se.seb.abid.spring.data.jpa.example.loginexample.service;
 
 import org.springframework.stereotype.Service;
 import se.seb.abid.spring.data.jpa.example.loginexample.entity.Student;
+import se.seb.abid.spring.data.jpa.example.loginexample.entity.User;
 import se.seb.abid.spring.data.jpa.example.loginexample.repository.StudentRepository;
 
 import java.util.List;
@@ -20,15 +21,15 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public Student loginValidation(String username, String password) {
+    public User loginValidation(String username, String password) {
 
-        Optional<Student> validatedUser = studentRepository.findStudentByEmailAnAndPassword(username, password);
+        Optional<User> validatedUser = studentRepository.findStudentByEmailAnAndPassword(username, password);
         return validatedUser.orElse(null);
 
     }
 
     private boolean isStudentExist(String email) {
-        Optional<Student> student = studentRepository.findStudentByEmail(email);
+        Optional<User> student = studentRepository.findStudentByEmail(email);
         return student.isPresent();
     }
 

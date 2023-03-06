@@ -3,14 +3,13 @@ package se.seb.abid.spring.data.jpa.example.loginexample.entity;
 import lombok.*;
 
 import javax.persistence.*;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter
 @Getter
 @ToString
 @Entity
-public class Student {
+public class User {
 
     @Id
             @SequenceGenerator(
@@ -41,7 +40,7 @@ public class Student {
     String password;
     String role;
 
-    public Student(String username, String email, String password, String role) {
+    public User(String username, String email, String password, String role) {
         this.username = username;
         this.email = email;
         this.password = password;

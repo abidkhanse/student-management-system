@@ -8,8 +8,6 @@ import javax.sql.DataSource;
 
 @Configuration
 public class DataSourceConfig {
-
-
     /*
     * How to check if database is not available and how to handle this error
     */
