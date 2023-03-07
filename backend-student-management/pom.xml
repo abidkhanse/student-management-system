@@ -11,7 +11,7 @@
     <groupId>se.seb.abid</groupId>
     <artifactId>loginexample</artifactId>
     <version>0.0.1</version>
-    <name>student-management</name>
+    <name>employee-management</name>
     <description>Demo project for Spring Boot</description>
     <properties>
         <java.version>17</java.version>

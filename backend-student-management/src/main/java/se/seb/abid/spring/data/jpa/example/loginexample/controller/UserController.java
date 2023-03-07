@@ -27,13 +27,13 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    public void addNewStudent(@RequestBody User user) {
-        userService.addNewStudent(user);
+    public void addNewUser(@RequestBody User user) {
+        userService.addNewUser(user);
     }
 
     @DeleteMapping(path = "/user/{userid}")
-    public void deleteStudent(@PathVariable("userid") Long id) {
-        userService.deleteStudent(id);
+    public void deleteUser(@PathVariable("userid") Long id) {
+        userService.deleteUser(id);
     }
 
 }

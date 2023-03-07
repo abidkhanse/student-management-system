@@ -28,24 +28,24 @@ public class UserService {
     }
 
     private boolean isUserExist(String email) {
-        Optional<User> student = userRepository.findUserByEmail(email);
-        return student.isPresent();
+        Optional<User> user = userRepository.findUserByEmail(email);
+        return user.isPresent();
     }
 
-    public void addNewStudent(User user) {
+    public void addNewUser(User user) {
         if (isUserExist(user.getEmail())) {
             throw new IllegalStateException(user.getEmail() + " is already in use");
         }
         userRepository.save(user);
     }
 
-    private boolean isStudentExist(Long id) {
+    private boolean isUserExist(Long id) {
         return userRepository.existsById(id);
     }
 
-    public void deleteStudent(Long id) {
-        if (!isStudentExist(id)) {
-            throw new IllegalStateException("Student ID " + id + " not found");
+    public void deleteUser(Long id) {
+        if (!isUserExist(id)) {
+            throw new IllegalStateException("User ID " + id + " not found");
         }
         userRepository.deleteById(id);
     }

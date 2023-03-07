@@ -10,17 +10,17 @@ import javax.persistence.*;
 @Getter
 @ToString
 @Entity
-public class Student {
+public class Employee {
 
     @Id
             @SequenceGenerator(
-                    name = "student_sequence",
-                    sequenceName = "student_sequence",
+                    name = "employee_sequence",
+                    sequenceName = "employee_sequence",
                     allocationSize = 1
             )
             @GeneratedValue(
                     strategy = GenerationType.IDENTITY,
-                    generator = "student_sequence"
+                    generator = "employee_sequence"
 
             )
     Long id;
@@ -40,12 +40,16 @@ public class Student {
     String email;
     String password;
     String role;
+    String firstname;
+    String lastname;
 
-    public Student(String username, String email, String password, String role) {
+
+    public Employee(String username, String email, String password, String role, String firstname, String lastname) {
         this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;
+        this.firstname = firstname;
+        this.lastname = lastname;
     }
-
 }
