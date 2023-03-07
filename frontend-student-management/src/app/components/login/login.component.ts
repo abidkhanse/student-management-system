@@ -22,22 +22,16 @@ export class LoginComponent implements OnInit {
   }
 
   loginUser(form: NgForm) {
-
     console.log("username " + this.username)
-  
-    
     this.us.getUserData(this.username,this.password).subscribe((res:any)=> {
 
       this.obj = res;
-      
       if (this.obj != null) {
         this.router.navigate(["/home"])
       } else {
         alert("Invalid username or password")
       }
     })
-
-    
   }
 
 }

@@ -7,12 +7,16 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { FormsModule } from '@angular/forms';
+import { EmployeeListComponent } from './employee-list/employee-list.component';
+import { EmployeeListContainerComponent } from './employee-list-container/employee-list-container.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    EmployeeListComponent,
+    EmployeeListContainerComponent
   ],
   imports: [
     BrowserModule,
