@@ -6,5 +6,6 @@ export class Employee {
     lastname? : string
     email? : string
     role? : string
+    password? : string
 
 }

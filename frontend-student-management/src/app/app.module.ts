@@ -8,7 +8,7 @@ import { LoginComponent } from './components/login/login.component';
 import { HomeComponent } from './components/home/home.component';
 import { FormsModule } from '@angular/forms';
 import { EmployeeListComponent } from './employee-list/employee-list.component';
-import { EmployeeListContainerComponent } from './employee-list-container/employee-list-container.component';
+import { CreateEmployeeComponent } from './components/create-employee/create-employee.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +16,7 @@ import { EmployeeListContainerComponent } from './employee-list-container/employ
     LoginComponent,
     HomeComponent,
     EmployeeListComponent,
-    EmployeeListContainerComponent
+    CreateEmployeeComponent,
   ],
   imports: [
     BrowserModule,
