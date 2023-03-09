@@ -1,33 +1,36 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Observable, throwError } from 'rxjs';
 import { Employee } from 'src/app/entity/employee';
-import { EmployeeService } from 'src/app/services/employee.service';
-import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
+import { EmployeeService } from 'src/app/services/employee.service';
 
 @Component({
-  selector: 'app-create-employee',
-  templateUrl: './create-employee.component.html',
-  styleUrls: ['./create-employee.component.css']
+  selector: 'app-update-employee',
+  templateUrl: './update-employee.component.html',
+  styleUrls: ['./update-employee.component.css']
 })
-export class CreateEmployeeComponent implements OnInit {
-
-  employee: Employee = new Employee()
-  roleTypes?: Observable<string[]>
+export class UpdateEmployeeComponent implements OnInit {
 
   postError = false;
   postErrorMessage = "";
+  employee: Employee = new Employee()
+  id?: number;
+  roleTypes?: Observable<string[]>
 
-  constructor(private employeeService: EmployeeService, private router: Router, private dataService: DataService) { }
+  constructor(private employeeService: EmployeeService, private route: ActivatedRoute, private router: Router, private dataService: DataService) { }
 
   ngOnInit(): void {
 
-    this.employee.password = this.randomString()
+    this.id = this.route.snapshot.params['id'];
     this.roleTypes = this.dataService.getRoleTypes()
-    this.employee.role = "0"
 
-  }
+    this.employeeService.getEmployeeById(this.id).subscribe(data => {
+      this.employee = data;
+    }, error => console.log(error))
+
+  };
 
   onHttpError(e: any) {
 
@@ -37,23 +40,13 @@ export class CreateEmployeeComponent implements OnInit {
 
   }
 
-  saveEmployee(employee: Employee) {
-    
-    this.employeeService.createEmployee(employee).subscribe(data => {
-      console.log("saveEmployee " + data);
-      this.gotoEmployeeList();
-    }, error =>  {
-      console.log("createEmployee " + error.error.message)
-    }
-    );
-  }
-
-
+  
   gotoEmployeeList() {
     this.router.navigate(['/employees'])
   }
 
-  
+
+    
   onSubmit(form: NgForm, employee: Employee) {
 
     console.log("form is valid " + form.valid)
@@ -82,18 +75,4 @@ export class CreateEmployeeComponent implements OnInit {
   }
 
   
-
-  randomString() {
-
-    var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var result = '';
-    for (var i = 0; i < 10; i++) {
-      result += randomChars.charAt(Math.floor(Math.random() * randomChars.length));
-    }
-
-    return result;
-  }
-
 }
-
-

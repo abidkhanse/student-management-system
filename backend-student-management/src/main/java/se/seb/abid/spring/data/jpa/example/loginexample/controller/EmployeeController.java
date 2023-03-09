@@ -23,6 +23,11 @@ public class EmployeeController {
        return employeeService.getEmployees();
     }
 
+    @GetMapping("/employee/{employeeid}")
+    public Employee getEmployee(@PathVariable("employeeid") Long id) {
+        return employeeService.getEmployeeById(id);
+    }
+
     @PostMapping("/employee")
     public void addNewEmployee(@RequestBody Employee employee) {
 
@@ -31,13 +36,20 @@ public class EmployeeController {
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
-
-
     }
 
     @DeleteMapping(path = "/employee/{employeeid}")
     public void deleteEmployee(@PathVariable("employeeid") Long id) {
         employeeService.deleteEmployee(id);
+    }
+
+    @PutMapping(path = "/employee/{employeeid}")
+    public void updateEmployee(@PathVariable("employeeid") Long id, @RequestBody Employee updatedVersion) {
+        try {
+            employeeService.updateEmployee(id, updatedVersion);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
 

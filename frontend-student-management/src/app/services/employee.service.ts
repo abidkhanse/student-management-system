@@ -25,6 +25,12 @@ export class EmployeeService {
 
   }
 
+  getEmployeeById(id?: number): Observable<Employee> {
+
+    return this.httpClient.get<Employee>(this.baseUrl + "employee/" + id)
+  
+  }
+
 
 
 

@@ -19,17 +19,22 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
+    public Employee getEmployeeById(Long id) {
 
-    /*
-    public User loginValidation(String username, String password) {
+        Employee employee = employeeRepository.findById(id)
+                .orElseThrow(() -> new IllegalStateException("Employee ID " + id + " not found"));
 
-        Optional<User> validatedUser = employeeRepository.findEmployeeByEmailAnAndPassword(username, password);
-        return validatedUser.orElse(null);
+        return employee;
 
     }
 
+    /*
+    public User loginValidation(String username, String password) {
+        Optional<User> validatedUser = employeeRepository.findEmployeeByEmailAnAndPassword(username, password);
+        return validatedUser.orElse(null);
+    }
+    */
 
-     */
     private boolean isEmployeeExist(String email) {
         Employee employee = employeeRepository.findByEmail(email);
         return employee != null;
@@ -51,6 +56,15 @@ public class EmployeeService {
             throw new IllegalStateException("Employee ID " + id + " not found");
         }
         employeeRepository.deleteById(id);
+    }
+
+    public void updateEmployee(Long id, Employee employee) {
+        if (!isEmployeeExist(id)) {
+            throw new IllegalStateException("Employee ID " + id + " not found");
+        }
+
+        employeeRepository.save(employee);
+
     }
 
 }
