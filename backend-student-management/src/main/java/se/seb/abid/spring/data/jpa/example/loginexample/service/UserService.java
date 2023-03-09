@@ -18,11 +18,7 @@ public class UserService {
 
     public User loginValidation(String username, String password) {
 
-        Optional<User> validatedUser = userRepository.findUserByUserNameAndPassword(username, password);
-
-        if (!validatedUser.isPresent()) {
-            validatedUser = userRepository.findUserByEmailAndPassword(username, password);
-        }
+        Optional<User> validatedUser = validatedUser = userRepository.findUserByEmailAndPassword(username, password);;
         return validatedUser.orElse(null);
 
     }

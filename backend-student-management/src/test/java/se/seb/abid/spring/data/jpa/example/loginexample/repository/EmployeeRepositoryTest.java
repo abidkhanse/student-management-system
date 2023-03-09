@@ -23,13 +23,11 @@ class EmployeeRepositoryTest {
     }
 
     @Test
-    public void saveStudent() {
-
-        /*
-        Employee khan = new Employee("abid","abid@seb.se","12345","Admin","Abid","Khan");
-        employeeRepository.save(khan);
-        */
-
+    public void getEmployeeByEmail() {
+        List<Employee> students = employeeRepository.findAll();
+        for (Employee std : students) {
+            System.out.println(employeeRepository.findByEmail(std.getEmail()) + "  ");
+        }
     }
 
 

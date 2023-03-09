@@ -2,11 +2,9 @@ package se.seb.abid.spring.data.jpa.example.loginexample.service;
 
 import org.springframework.stereotype.Service;
 import se.seb.abid.spring.data.jpa.example.loginexample.entity.Employee;
-import se.seb.abid.spring.data.jpa.example.loginexample.entity.User;
 import se.seb.abid.spring.data.jpa.example.loginexample.repository.EmployeeRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class EmployeeService {
@@ -21,6 +19,8 @@ public class EmployeeService {
         return employeeRepository.findAll();
     }
 
+
+    /*
     public User loginValidation(String username, String password) {
 
         Optional<User> validatedUser = employeeRepository.findEmployeeByEmailAnAndPassword(username, password);
@@ -28,9 +28,11 @@ public class EmployeeService {
 
     }
 
+
+     */
     private boolean isEmployeeExist(String email) {
-        Optional<User> employee = employeeRepository.findEmployeeByEmail(email);
-        return employee.isPresent();
+        Employee employee = employeeRepository.findByEmail(email);
+        return employee != null;
     }
 
     public void addNewEmployee(Employee employee) {

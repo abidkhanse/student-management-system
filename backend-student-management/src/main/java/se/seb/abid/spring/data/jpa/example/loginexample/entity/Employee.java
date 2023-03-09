@@ -1,7 +1,5 @@
 package se.seb.abid.spring.data.jpa.example.loginexample.entity;
-
 import lombok.*;
-
 import javax.persistence.*;
 
 @AllArgsConstructor
@@ -24,14 +22,6 @@ public class Employee {
 
             )
     Long id;
-
-    @Column(
-            name = "user_name",
-            nullable = false,
-            unique = true
-    )
-    String username;
-
     @Column(
             name = "email_address",
             nullable = false,
@@ -44,8 +34,8 @@ public class Employee {
     String lastname;
 
 
-    public Employee(String username, String email, String password, String role, String firstname, String lastname) {
-        this.username = username;
+    public Employee(String email, String password, String role, String firstname, String lastname) {
+
         this.email = email;
         this.password = password;
         this.role = role;

@@ -25,13 +25,6 @@ public class User {
     Long id;
 
     @Column(
-            name = "user_name",
-            nullable = false,
-            unique = true
-    )
-    String username;
-
-    @Column(
             name = "email_address",
             nullable = false,
             unique = true
@@ -41,7 +34,6 @@ public class User {
     String role;
 
     public User(String username, String email, String password, String role) {
-        this.username = username;
         this.email = email;
         this.password = password;
         this.role = role;

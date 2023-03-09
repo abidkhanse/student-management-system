@@ -1,6 +1,8 @@
 package se.seb.abid.spring.data.jpa.example.loginexample.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import se.seb.abid.spring.data.jpa.example.loginexample.entity.Employee;
 import se.seb.abid.spring.data.jpa.example.loginexample.service.EmployeeService;
 
@@ -23,7 +25,14 @@ public class EmployeeController {
 
     @PostMapping("/employee")
     public void addNewEmployee(@RequestBody Employee employee) {
-        employeeService.addNewEmployee(employee);
+
+        try {
+            employeeService.addNewEmployee(employee);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+
+
     }
 
     @DeleteMapping(path = "/employee/{employeeid}")
