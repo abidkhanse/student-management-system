@@ -26,7 +26,7 @@
 
         <div class="form-group">
             <label>Email address</label>
-            <input type="text" class="form-control" id="email" [(ngModel)]="employee.email" name="email" ngModel [email]="true"
+            <input disabled="true" type="text" class="form-control" id="email" [(ngModel)]="employee.email" name="email" ngModel [email]="true"
             required #emailFiled="ngModel" [class.field-error]="form.submitted && emailFiled.invalid">
             <div [hidden]="emailFiled.valid || !form.submitted" class="alert alert-danger">
                 Enter a valid email address

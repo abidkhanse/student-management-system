@@ -5,50 +5,53 @@
 
         <div class="form-group">
             <label>First Name</label>
-            <input type="text" class="form-control" id="firstname" [(ngModel)]="employee.firstname" name="firstname" 
-            
-            required #firstNameFiled="ngModel" [class.field-error]="form.submitted && firstNameFiled.invalid">
-            <div [hidden]="firstNameFiled.valid || !form.submitted" class="alert alert-danger">
+            <input type="text" class="form-control" id="firstname" [(ngModel)]="employee.firstname" name="firstname"
+                required #firstNameFiled="ngModel" 
+                [class.field-error]="form.submitted && firstNameFiled.invalid">
+
+            <div [hidden]="firstNameFiled.valid || !form.submitted" 
+                class="alert alert-danger">
                 Frist name cannot be empty
             </div>
-            
+
         </div>
 
         <div class="form-group">
             <label>Last Name</label>
             <input type="text" class="form-control" id="lastname" [(ngModel)]="employee.lastname" name="lastname"
-            required #lastNameFiled="ngModel" [class.field-error]="form.submitted && lastNameFiled.invalid">
+                required #lastNameFiled="ngModel" [class.field-error]="form.submitted && lastNameFiled.invalid">
             <div [hidden]="lastNameFiled.valid || !form.submitted" class="alert alert-danger">
                 Last name cannot be empty
             </div>
-            
+
         </div>
 
         <div class="form-group">
             <label>Email address</label>
-            <input type="text" class="form-control" id="email" [(ngModel)]="employee.email" name="email" ngModel [email]="true"
-            required #emailFiled="ngModel" [class.field-error]="form.submitted && emailFiled.invalid">
+            <input type="text" class="form-control" id="email" [(ngModel)]="employee.email" name="email" ngModel
+                [email]="true" required #emailFiled="ngModel"
+                [class.field-error]="form.submitted && emailFiled.invalid">
             <div [hidden]="emailFiled.valid || !form.submitted" class="alert alert-danger">
                 Enter a valid email address
             </div>
         </div>
-        
+
         <div class="form-group">
 
             <label>Role How to select default</label>
-            <select class="form-select" [(ngModel)]="employee.role" name="roletype" ngModel selected>
-                <option *ngFor="let type of roleTypes | async" >
+            <select class="form-select" [(ngModel)]="employee.role" name="roletype">
+                <option *ngFor="let type of roleTypes | async">
                     {{type}}
                 </option>
             </select>
 
-
         </div>
 
         <div class="form-group">
-            <label>Auto Generated Password (update if you wish) </label>
-            <input type="text" class="form-control" id="password" [(ngModel)]="employee.password" name="password" minlength="5"
-            required #passwordFiled="ngModel" [class.field-error]="form.submitted && passwordFiled.invalid">
+            <label>Auto Generated Password (wish) </label>
+            <input type="text" class="form-control" id="password" [(ngModel)]="employee.password" name="password"
+                minlength="5" required #passwordFiled="ngModel"
+                [class.field-error]="form.submitted && passwordFiled.invalid">
             <div [hidden]="passwordFiled.valid || !form.submitted" class="alert alert-danger">
                 Password with minimum of 5 characters
             </div>
@@ -57,9 +60,9 @@
         <br>
         <div>
             <div [hidden]="!postError" class="alert alert-danger">
-              {{postErrorMessage}}
+                {{postErrorMessage}}
             </div>
-          </div>
+        </div>
         <div class="form-group">
             <button class="btn btn-success" type="submit">Create User</button>
         </div>

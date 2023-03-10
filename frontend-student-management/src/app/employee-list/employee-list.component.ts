@@ -18,22 +18,6 @@ export class EmployeeListComponent implements OnInit {
 
     this.getEmployees() 
 
-    /*
-
-    this.employees = [{
-      "id": 1,
-      "firstname": "Abid",
-      "lastname" : "Khan",
-      "emailid" : "abid@seb.se"
-    },
-    {
-      "id": 2,
-      "firstname": "Shahroz",
-      "lastname" : "Khan",
-      "emailid" : "shahroz@seb.se"
-    }
-    */
-
   }
 
   getEmployees() {
@@ -44,6 +28,12 @@ export class EmployeeListComponent implements OnInit {
 
   updateEmployee(id?: number) {
     this.router.navigate(['update-employee', id]);
+  }
+
+  deleteEmployee(id?: number) {
+    this.employeeService.deleteEmployee(id).subscribe(data => {
+      this.getEmployees()
+    })
   }
 
 }

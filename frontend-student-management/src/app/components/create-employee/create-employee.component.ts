@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, take, throwError } from 'rxjs';
 import { Employee } from 'src/app/entity/employee';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { Router } from '@angular/router';
@@ -16,6 +16,8 @@ export class CreateEmployeeComponent implements OnInit {
   employee: Employee = new Employee()
   roleTypes?: Observable<string[]>
 
+  value?: Array<string>;
+
   postError = false;
   postErrorMessage = "";
 
@@ -25,7 +27,15 @@ export class CreateEmployeeComponent implements OnInit {
 
     this.employee.password = this.randomString()
     this.roleTypes = this.dataService.getRoleTypes()
-    this.employee.role = "0"
+
+    this.roleTypes
+      .pipe(take(1))
+      .subscribe((firstName) => {
+        this.value = firstName;
+      });
+
+    this.employee.role = this.value?.at(0)
+
 
   }
 
@@ -38,11 +48,11 @@ export class CreateEmployeeComponent implements OnInit {
   }
 
   saveEmployee(employee: Employee) {
-    
+
     this.employeeService.createEmployee(employee).subscribe(data => {
       console.log("saveEmployee " + data);
       this.gotoEmployeeList();
-    }, error =>  {
+    }, error => {
       console.log("createEmployee " + error.error.message)
     }
     );
@@ -53,35 +63,36 @@ export class CreateEmployeeComponent implements OnInit {
     this.router.navigate(['/employees'])
   }
 
-  
+
   onSubmit(form: NgForm, employee: Employee) {
 
     console.log("form is valid " + form.valid)
-    
-    this.employeeService.createEmployee(this.employee).pipe (
+    if (form.valid) {
+      this.employeeService.createEmployee(this.employee).pipe(
 
-      catchError(
-        e => {
-          console.log("onSubmit " +  e.error.message)
-          this.onHttpError(e)
-          return throwError(e)
-        })
-    )
-      .subscribe(
-        result => {
-          if (form.valid) {
-            console.log("successfully created user with email: " + employee.email)
-            this.gotoEmployeeList();
-          } else {
-            this.postError = true;
-            this.postErrorMessage = "Fix the about errors"
+        catchError(
+          e => {
+            console.log("onSubmit " + e.error.message)
+            this.onHttpError(e)
+            return throwError(e)
+          })
+      )
+        .subscribe(
+          result => {
+            if (form.valid) {
+              console.log("successfully created user with email: " + employee.email)
+              this.gotoEmployeeList();
+            } else {
+              this.postError = true;
+              this.postErrorMessage = "Fix the about errors"
 
+            }
           }
-        }
-      );
+        );
+    }
   }
 
-  
+
 
   randomString() {
 

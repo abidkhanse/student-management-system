@@ -62,9 +62,7 @@ public class EmployeeService {
         if (!isEmployeeExist(id)) {
             throw new IllegalStateException("Employee ID " + id + " not found");
         }
-
-        employeeRepository.save(employee);
-
+        employeeRepository.updateEmployee(employee.getFirstname(), employee.getLastname(), employee.getPassword(), employee.getRole(), id);
     }
 
 }

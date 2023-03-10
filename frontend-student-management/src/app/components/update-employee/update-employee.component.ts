@@ -40,39 +40,40 @@ export class UpdateEmployeeComponent implements OnInit {
 
   }
 
-  
+
   gotoEmployeeList() {
     this.router.navigate(['/employees'])
   }
 
 
-    
+
   onSubmit(form: NgForm, employee: Employee) {
 
     console.log("form is valid " + form.valid)
-    
-    this.employeeService.createEmployee(this.employee).pipe (
 
-      catchError(
-        e => {
-          console.log("onSubmit " +  e.error.message)
-          this.onHttpError(e)
-          return throwError(e)
-        })
-    )
-      .subscribe(
-        result => {
-          if (form.valid) {
-            console.log("successfully created user with email: " + employee.email)
-            this.gotoEmployeeList();
-          } else {
-            this.postError = true;
-            this.postErrorMessage = "Fix the about errors"
+    if (form.valid) {
 
+      this.employeeService.updateEmployee(this.employee).pipe(
+
+        catchError(
+          e => {
+            console.log("onSubmit " + e.error.message)
+            this.onHttpError(e)
+            return throwError(e)
+          })
+      )
+        .subscribe(
+          () => {
+            if (form.valid) {
+              console.log("successfully created user with email: " + employee.email)
+              this.gotoEmployeeList();
+            } else {
+              this.postError = true;
+              this.postErrorMessage = "Fix the about errors"
+
+            }
           }
-        }
-      );
+        );
+    }
   }
-
-  
 }

@@ -40,7 +40,11 @@ public class EmployeeController {
 
     @DeleteMapping(path = "/employee/{employeeid}")
     public void deleteEmployee(@PathVariable("employeeid") Long id) {
-        employeeService.deleteEmployee(id);
+        try {
+            employeeService.deleteEmployee(id);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
     }
 
     @PutMapping(path = "/employee/{employeeid}")

@@ -9,13 +9,23 @@
         </tr>
     </thead>
     <tbody>
+
+        <div *ngIf="employees.length === 0; else elseBlock">
+            <h5>Add record</h5>
+        </div>
+        <ng-template #elseBlock>
+
         <tr *ngFor="let employee of employees">
             <td>{{employee.firstname}}</td>
             <td>{{employee.lastname}}</td>
             <td>{{employee.email}}</td>
             <td>{{employee.role}}</td>
             <td><button (click)="updateEmployee(employee.id)" class = "btn btn-primary">Update</button></td>
+            <td><button (click)="deleteEmployee(employee.id)" class = "btn btn-danger">Delete</button></td>
         </tr>
+
+    </ng-template>
+
     </tbody>
 
 </table>
