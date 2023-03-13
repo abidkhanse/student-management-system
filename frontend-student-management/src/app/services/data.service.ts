@@ -1,19 +1,31 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
+import { Role } from '../entity/role';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private httpClient: HttpClient) { }
 
-  // Is it better to make a connection with database and get the roles from there or it is suffice to have roles here hard coded
-  getRoleTypes(): Observable<string[]> {
+  private baseUrl = "http://localhost:8080/data-service/"
 
-    return of(['User','Manager','Admin'])
+
   
+  getRoleTypes(): Observable<string[]> {
+    return of(['User','Manager','Admin'])
   }
+  
+
+  
+  getRoles(): Observable<Role[]> {
+    return this.httpClient.get<Role[]>(this.baseUrl + "roles")
+  }
+  
+
+
 
 }
+

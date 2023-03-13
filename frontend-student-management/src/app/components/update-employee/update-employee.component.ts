@@ -3,6 +3,7 @@ import { NgForm } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, Observable, throwError } from 'rxjs';
 import { Employee } from 'src/app/entity/employee';
+import { Role } from 'src/app/entity/role';
 import { DataService } from 'src/app/services/data.service';
 import { EmployeeService } from 'src/app/services/employee.service';
 
@@ -17,7 +18,7 @@ export class UpdateEmployeeComponent implements OnInit {
   postErrorMessage = "";
   employee: Employee = new Employee()
   id?: number;
-  roleTypes?: Observable<string[]>
+  roleTypes?: Observable<String[]>
 
   constructor(private employeeService: EmployeeService, private route: ActivatedRoute, private router: Router, private dataService: DataService) { }
 

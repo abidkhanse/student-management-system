@@ -39,9 +39,9 @@
         <div class="form-group">
 
             <label>Role How to select default</label>
-            <select class="form-select" [(ngModel)]="employee.role" name="roletype">
-                <option *ngFor="let type of roleTypes | async">
-                    {{type}}
+            <select class="form-select" [(ngModel)]="employee.role" name="role">
+                <option *ngFor="let type of roles">
+                    {{type.role}}
                 </option>
             </select>
 

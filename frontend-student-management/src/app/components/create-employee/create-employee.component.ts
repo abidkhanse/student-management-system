@@ -1,42 +1,56 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { catchError, Observable, take, throwError } from 'rxjs';
+import { catchError, Observable, Subscription, take, throwError } from 'rxjs';
 import { Employee } from 'src/app/entity/employee';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
+import { Role } from 'src/app/entity/role';
 
 @Component({
   selector: 'app-create-employee',
   templateUrl: './create-employee.component.html',
   styleUrls: ['./create-employee.component.css']
 })
-export class CreateEmployeeComponent implements OnInit {
+export class CreateEmployeeComponent implements OnInit, OnDestroy{
 
   employee: Employee = new Employee()
   roleTypes?: Observable<string[]>
 
-  value?: Array<string>;
+  rolesList?: Observable<Role[]>
+  roles : Role[] = []
+
+  value?: string;
 
   postError = false;
   postErrorMessage = "";
+
+  subs : Subscription[] = [];
 
   constructor(private employeeService: EmployeeService, private router: Router, private dataService: DataService) { }
 
   ngOnInit(): void {
 
     this.employee.password = this.randomString()
-    this.roleTypes = this.dataService.getRoleTypes()
 
-    this.roleTypes
-      .pipe(take(1))
-      .subscribe((firstName) => {
-        this.value = firstName;
-      });
+    this.getRoles()
 
-    this.employee.role = this.value?.at(0)
+  }
 
+  ngOnDestroy(): void {
 
+    this.subs.forEach(sub => {
+      sub.unsubscribe()
+    })
+
+  }
+
+  getRoles() {
+    this.dataService.getRoles().subscribe(data => {
+      this.roles = data    
+      this.employee.role = this.roles[0].role
+      console.log(this.roles)
+    })
   }
 
   onHttpError(e: any) {
@@ -66,7 +80,7 @@ export class CreateEmployeeComponent implements OnInit {
 
   onSubmit(form: NgForm, employee: Employee) {
 
-    console.log("form is valid " + form.valid)
+    console.log("form is valid " + form)
     if (form.valid) {
       this.employeeService.createEmployee(this.employee).pipe(
 
