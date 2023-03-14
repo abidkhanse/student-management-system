@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, NgForm, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { catchError, Observable, throwError } from 'rxjs';
+import { catchError, Observable, Subscription, throwError } from 'rxjs';
 import { Employee } from 'src/app/entity/employee';
 import { Role } from 'src/app/entity/role';
 import { DataService } from 'src/app/services/data.service';
@@ -18,44 +18,78 @@ export class UpdateEmployeeComponent implements OnInit {
   postErrorMessage = "";
   employee: Employee = new Employee()
   id?: number;
-  roleTypes?: Observable<String[]>
+  roles : Role[] = []
+  isSubmitted = false
+  subs : Subscription[] = [];
 
-  constructor(private employeeService: EmployeeService, private route: ActivatedRoute, private router: Router, private dataService: DataService) { }
+  registerForm = this.fb.group({
+
+    firstname: ['', Validators.required],
+    lastname: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    role: '',
+    password:['',Validators.required],
+    id:0
+
+  })
+  
+  constructor(private fb: FormBuilder, 
+    private employeeService: EmployeeService, 
+    private route: ActivatedRoute, 
+    private router: Router, 
+    private dataService: DataService) 
+  { }
 
   ngOnInit(): void {
 
     this.id = this.route.snapshot.params['id'];
-    this.roleTypes = this.dataService.getRoleTypes()
+    this.getRoles();
 
-    this.employeeService.getEmployeeById(this.id).subscribe(data => {
-      this.employee = data;
+    console.log("ID " + this.id)
+
+    let val = this.employeeService.getEmployeeById(this.id).subscribe(data => {
+
+      this.registerForm.controls['firstname'].setValue(data.firstname as string)
+      this.registerForm.controls['lastname'].setValue(data.lastname as string) 
+      this.registerForm.controls['email'].setValue(data.email as string) 
+      this.registerForm.controls['role'].setValue(data.role as string) 
+      this.registerForm.controls['password'].setValue(data.password as string) 
+
     }, error => console.log(error))
+
+    this.subs.push(val)
 
   };
 
-  onHttpError(e: any) {
+  getRoles() {
 
-    console.log("Error: " + e.error.message)
-    this.postError = true;
-    this.postErrorMessage = e.error.message;
+    let val = this.dataService.getRoles().subscribe(data => {
+      this.roles = data    
+    })
+    this.subs.push(val)
 
   }
 
+  onHttpError(e: any) {
+    console.log("Error: " + e.error.message)
+    this.postError = true;
+    this.postErrorMessage = e.error.message;
+  }
 
   gotoEmployeeList() {
     this.router.navigate(['/employees'])
   }
 
 
+  onSubmit() {
 
-  onSubmit(form: NgForm, employee: Employee) {
+    this.isSubmitted = true
+    if (this.registerForm.valid) {
 
-    console.log("form is valid " + form.valid)
+      this.registerForm.value.id = this.id
 
-    if (form.valid) {
-
-      this.employeeService.updateEmployee(this.employee).pipe(
-
+      let val = this.employeeService.updateEmployee(this.registerForm.value as Employee).pipe(
+        
         catchError(
           e => {
             console.log("onSubmit " + e.error.message)
@@ -64,10 +98,11 @@ export class UpdateEmployeeComponent implements OnInit {
           })
       )
         .subscribe(
-          () => {
-            if (form.valid) {
-              console.log("successfully created user with email: " + employee.email)
+          result => {
+            if (this.registerForm.valid) {
+              console.log("successfully created user with email: " + this.registerForm.valid)
               this.gotoEmployeeList();
+              
             } else {
               this.postError = true;
               this.postErrorMessage = "Fix the about errors"
@@ -75,6 +110,9 @@ export class UpdateEmployeeComponent implements OnInit {
             }
           }
         );
+
+        this.subs.push(val)
     }
   }
+
 }

@@ -1,71 +1,86 @@
 <div class="col-md-6 offset-md-3">
 
-    <h3>Update Employee</h3>
-    <form #form="ngForm" (ngSubmit)="onSubmit(form,employee)">
+    <h3>Create Employee</h3>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
 
         <div class="form-group">
             <label>First Name</label>
-            <input type="text" class="form-control" id="firstname" [(ngModel)]="employee.firstname" name="firstname" 
-            
-            required #firstNameFiled="ngModel" [class.field-error]="form.submitted && firstNameFiled.invalid">
-            <div [hidden]="firstNameFiled.valid || !form.submitted" class="alert alert-danger">
-                Frist name cannot be empty
+            <input type="text" class="form-control" id="firstname" formControlName="firstname" [class.invalid]="
+                registerForm.get('username')?.invalid && 
+                (registerForm.get('username')?.dirty
+                || registerForm.get('username')?.touched
+                || isSubmitted)
+                ">
+
+            <div [hidden]="registerForm.get('firstname')?.valid || !isSubmitted" class="alert alert-danger">
+                First name cannot be empty
             </div>
-            
         </div>
 
         <div class="form-group">
             <label>Last Name</label>
-            <input type="text" class="form-control" id="lastname" [(ngModel)]="employee.lastname" name="lastname"
-            required #lastNameFiled="ngModel" [class.field-error]="form.submitted && lastNameFiled.invalid">
-            <div [hidden]="lastNameFiled.valid || !form.submitted" class="alert alert-danger">
+            <input type="text" class="form-control" id="lastname" formControlName="lastname" [class.invalid]="
+            registerForm.get('lastname')?.invalid && 
+            (registerForm.get('lastname')?.dirty
+            || registerForm.get('lastname')?.touched
+            || isSubmitted)
+            ">
+            <div [hidden]="registerForm.get('lastname')?.valid || !isSubmitted" class="alert alert-danger">
                 Last name cannot be empty
             </div>
-            
+
         </div>
 
         <div class="form-group">
             <label>Email address</label>
-            <input disabled="true" type="text" class="form-control" id="email" [(ngModel)]="employee.email" name="email" ngModel [email]="true"
-            required #emailFiled="ngModel" [class.field-error]="form.submitted && emailFiled.invalid">
-            <div [hidden]="emailFiled.valid || !form.submitted" class="alert alert-danger">
-                Enter a valid email address
+            <input type="text" class="form-control" [attr.disabled]="true" id="email" formControlName="email" [class.invalid]="
+            registerForm.get('email')?.invalid && 
+            (registerForm.get('email')?.dirty
+            || registerForm.get('email')?.touched
+            || isSubmitted)
+            ">
+
+            <div [hidden]="registerForm.get('email')?.valid || !isSubmitted" class="alert alert-danger">
+                email cannot be empty
             </div>
         </div>
-        
         <div class="form-group">
 
             <label>Role How to select default</label>
-            <select class="form-select" [(ngModel)]="employee.role" name="roletype" ngModel selected>
-                <option *ngFor="let type of roleTypes | async" >
-                    {{type}}
+            <select class="form-select" formControlName="role">
+                <option *ngFor="let type of roles" [value]="type.role">
+                    {{type.role}}
                 </option>
             </select>
-
 
         </div>
 
         <div class="form-group">
-            <label>Auto Generated Password (update if you wish) </label>
-            <input type="text" class="form-control" id="password" [(ngModel)]="employee.password" name="password" minlength="5"
-            required #passwordFiled="ngModel" [class.field-error]="form.submitted && passwordFiled.invalid">
-            <div [hidden]="passwordFiled.valid || !form.submitted" class="alert alert-danger">
-                Password with minimum of 5 characters
+            <label>Auto Generated Password (wish) </label>
+            <input type="text" class="form-control" id="password" formControlName="password" [class.invalid]="
+            registerForm.get('password')?.invalid && 
+            (registerForm.get('password')?.dirty
+            || registerForm.get('password')?.touched
+            || isSubmitted)
+            ">
+
+            <div [hidden]="registerForm.get('password')?.valid || !isSubmitted" class="alert alert-danger">
+                Password cannot be empty
             </div>
         </div>
-
         <br>
         <div>
             <div [hidden]="!postError" class="alert alert-danger">
-              {{postErrorMessage}}
+                {{postErrorMessage}}
             </div>
-          </div>
+        </div>
         <div class="form-group">
             <button class="btn btn-success" type="submit">Update User</button>
         </div>
 
     </form>
 
-    <h3>{{ employee | json }}</h3>
+
+    <h3>{{ registerForm.value | json }}</h3>
 
 </div>

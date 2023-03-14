@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, NgForm, Validators } from '@angular/forms';
 import { catchError, Observable, Subscription, take, throwError } from 'rxjs';
 import { Employee } from 'src/app/entity/employee';
 import { EmployeeService } from 'src/app/services/employee.service';
@@ -15,26 +15,27 @@ import { Role } from 'src/app/entity/role';
 export class CreateEmployeeComponent implements OnInit, OnDestroy{
 
   employee: Employee = new Employee()
-  roleTypes?: Observable<string[]>
-
-  rolesList?: Observable<Role[]>
   roles : Role[] = []
-
   value?: string;
-
   postError = false;
   postErrorMessage = "";
-
   subs : Subscription[] = [];
+  isSubmitted = false
 
-  constructor(private employeeService: EmployeeService, private router: Router, private dataService: DataService) { }
+  registerForm = this.fb.group({
+
+    firstname: ['', Validators.required],
+    lastname: ['', Validators.required],
+    email: ['', [Validators.required, Validators.email]],
+    role: '',
+    password:[this.generatePassword(), Validators.required]
+
+  })
+
+  constructor(private fb: FormBuilder, private employeeService: EmployeeService, private router: Router, private dataService: DataService) { }
 
   ngOnInit(): void {
-
-    this.employee.password = this.randomString()
-
     this.getRoles()
-
   }
 
   ngOnDestroy(): void {
@@ -42,15 +43,17 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy{
     this.subs.forEach(sub => {
       sub.unsubscribe()
     })
-
   }
 
+
+
   getRoles() {
+
     this.dataService.getRoles().subscribe(data => {
       this.roles = data    
-      this.employee.role = this.roles[0].role
-      console.log(this.roles)
+      this.registerForm.controls['role'].setValue(this.roles[0].role)
     })
+
   }
 
   onHttpError(e: any) {
@@ -63,13 +66,15 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy{
 
   saveEmployee(employee: Employee) {
 
-    this.employeeService.createEmployee(employee).subscribe(data => {
+    let val = this.employeeService.createEmployee(employee).subscribe(data => {
       console.log("saveEmployee " + data);
       this.gotoEmployeeList();
     }, error => {
       console.log("createEmployee " + error.error.message)
     }
     );
+
+    this.subs.push(val)
   }
 
 
@@ -77,13 +82,13 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy{
     this.router.navigate(['/employees'])
   }
 
+  onSubmit() {
 
-  onSubmit(form: NgForm, employee: Employee) {
+    this.isSubmitted = true
+    if (this.registerForm.valid) {
 
-    console.log("form is valid " + form)
-    if (form.valid) {
-      this.employeeService.createEmployee(this.employee).pipe(
-
+      let val = this.employeeService.createEmployee(this.registerForm.value as Employee).pipe(
+        
         catchError(
           e => {
             console.log("onSubmit " + e.error.message)
@@ -93,9 +98,10 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy{
       )
         .subscribe(
           result => {
-            if (form.valid) {
-              console.log("successfully created user with email: " + employee.email)
+            if (this.registerForm.valid) {
+              console.log("successfully created user with email: " + this.registerForm.valid)
               this.gotoEmployeeList();
+              
             } else {
               this.postError = true;
               this.postErrorMessage = "Fix the about errors"
@@ -103,12 +109,13 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy{
             }
           }
         );
+
+        this.subs.push(val)
     }
   }
 
 
-
-  randomString() {
+  generatePassword() {
 
     var randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     var result = '';
