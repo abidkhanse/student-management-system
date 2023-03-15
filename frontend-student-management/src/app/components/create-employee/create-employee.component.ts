@@ -14,7 +14,7 @@ import { Role } from 'src/app/entity/role';
 })
 export class CreateEmployeeComponent implements OnInit, OnDestroy{
 
-  employee: Employee = new Employee()
+  employee: Employee = {} as Employee;
   roles : Role[] = []
   value?: string;
   postError = false;
@@ -28,7 +28,7 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy{
     lastname: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     role: '',
-    password:[this.generatePassword(), Validators.required]
+    password:[this.generatePassword(), [Validators.required,Validators.minLength(5)]]
 
   })
 
@@ -64,20 +64,6 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy{
 
   }
 
-  saveEmployee(employee: Employee) {
-
-    let val = this.employeeService.createEmployee(employee).subscribe(data => {
-      console.log("saveEmployee " + data);
-      this.gotoEmployeeList();
-    }, error => {
-      console.log("createEmployee " + error.error.message)
-    }
-    );
-
-    this.subs.push(val)
-  }
-
-
   gotoEmployeeList() {
     this.router.navigate(['/employees'])
   }
@@ -85,6 +71,9 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy{
   onSubmit() {
 
     this.isSubmitted = true
+
+    console.log(this.registerForm)
+
     if (this.registerForm.valid) {
 
       let val = this.employeeService.createEmployee(this.registerForm.value as Employee).pipe(

@@ -16,7 +16,7 @@ export class UpdateEmployeeComponent implements OnInit {
 
   postError = false;
   postErrorMessage = "";
-  employee: Employee = new Employee()
+  employee: Employee = {} as Employee;
   id?: number;
   roles : Role[] = []
   isSubmitted = false
@@ -28,11 +28,11 @@ export class UpdateEmployeeComponent implements OnInit {
     lastname: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     role: '',
-    password:['',Validators.required],
-    id:0
+    password:['', [Validators.required,Validators.minLength(5)]],
+    id: 0
 
   })
-  
+
   constructor(private fb: FormBuilder, 
     private employeeService: EmployeeService, 
     private route: ActivatedRoute, 
@@ -48,12 +48,7 @@ export class UpdateEmployeeComponent implements OnInit {
     console.log("ID " + this.id)
 
     let val = this.employeeService.getEmployeeById(this.id).subscribe(data => {
-
-      this.registerForm.controls['firstname'].setValue(data.firstname as string)
-      this.registerForm.controls['lastname'].setValue(data.lastname as string) 
-      this.registerForm.controls['email'].setValue(data.email as string) 
-      this.registerForm.controls['role'].setValue(data.role as string) 
-      this.registerForm.controls['password'].setValue(data.password as string) 
+      this.registerForm.setValue(data)
 
     }, error => console.log(error))
 
@@ -85,8 +80,6 @@ export class UpdateEmployeeComponent implements OnInit {
 
     this.isSubmitted = true
     if (this.registerForm.valid) {
-
-      this.registerForm.value.id = this.id
 
       let val = this.employeeService.updateEmployee(this.registerForm.value as Employee).pipe(
         

@@ -64,9 +64,13 @@
             || isSubmitted)
             ">
 
-            <div [hidden]="registerForm.get('password')?.valid || !isSubmitted" class="alert alert-danger">
+            <div *ngIf="registerForm.get('password')?.invalid && (isSubmitted || registerForm.get('password')?.dirty || registerForm.get('password')?.touched) " class="alert alert-danger">
                 Password cannot be empty
             </div>
+            <div *ngIf="registerForm.get('password')?.errors?.['minlength']" class="alert alert-danger">
+               length must be at least 5 characters
+            </div>
+
         </div>
         <br>
         <div>
