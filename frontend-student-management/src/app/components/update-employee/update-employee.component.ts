@@ -6,6 +6,7 @@ import { Employee } from 'src/app/entity/employee';
 import { Role } from 'src/app/entity/role';
 import { DataService } from 'src/app/services/data.service';
 import { EmployeeService } from 'src/app/services/employee.service';
+import { PopupMessageService } from 'src/app/services/popup-message.service';
 
 @Component({
   selector: 'app-update-employee',
@@ -37,7 +38,8 @@ export class UpdateEmployeeComponent implements OnInit {
     private employeeService: EmployeeService, 
     private route: ActivatedRoute, 
     private router: Router, 
-    private dataService: DataService) 
+    private dataService: DataService,
+    private popupService: PopupMessageService) 
   { }
 
   ngOnInit(): void {
@@ -86,15 +88,22 @@ export class UpdateEmployeeComponent implements OnInit {
         catchError(
           e => {
             console.log("onSubmit " + e.error.message)
+            this.popupService.errorMessage({ message: "Error: " + e.error.message })
+
             this.onHttpError(e)
             return throwError(e)
           })
+
       )
         .subscribe(
           result => {
             if (this.registerForm.valid) {
-              console.log("successfully created user with email: " + this.registerForm.valid)
+
+              this.popupService.successMessage({ message: this.registerForm.value.firstname + " user updated successfully" })
+
+              console.log("successfully updated user with email: " + this.registerForm.valid)
               this.gotoEmployeeList();
+
               
             } else {
               this.postError = true;

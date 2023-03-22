@@ -6,6 +6,7 @@ import { EmployeeService } from 'src/app/services/employee.service';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/services/data.service';
 import { Role } from 'src/app/entity/role';
+import { PopupMessageService } from 'src/app/services/popup-message.service';
 
 @Component({
   selector: 'app-create-employee',
@@ -32,7 +33,7 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy{
 
   })
 
-  constructor(private fb: FormBuilder, private employeeService: EmployeeService, private router: Router, private dataService: DataService) { }
+  constructor(private fb: FormBuilder, private employeeService: EmployeeService, private router: Router,  private popupService: PopupMessageService ,private dataService: DataService) { }
 
   ngOnInit(): void {
     this.getRoles()
@@ -44,8 +45,6 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy{
       sub.unsubscribe()
     })
   }
-
-
 
   getRoles() {
 
@@ -68,10 +67,9 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy{
     this.router.navigate(['/employees'])
   }
 
-  onSubmit() {
+   onSubmit() {
 
     this.isSubmitted = true
-
     console.log(this.registerForm)
 
     if (this.registerForm.valid) {
@@ -80,6 +78,7 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy{
         
         catchError(
           e => {
+            this.popupService.errorMessage({ message: "Error:" + e.error.message })
             console.log("onSubmit " + e.error.message)
             this.onHttpError(e)
             return throwError(e)
@@ -88,13 +87,12 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy{
         .subscribe(
           result => {
             if (this.registerForm.valid) {
+              this.popupService.successMessage({ message: "User created: email:" + this.registerForm.value.email })
               console.log("successfully created user with email: " + this.registerForm.valid)
               this.gotoEmployeeList();
-              
             } else {
               this.postError = true;
-              this.postErrorMessage = "Fix the about errors"
-
+              this.postErrorMessage = "Fix the errors"
             }
           }
         );

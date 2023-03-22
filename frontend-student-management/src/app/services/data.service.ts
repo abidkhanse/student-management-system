@@ -11,15 +11,11 @@ export class DataService {
   constructor(private httpClient: HttpClient) { }
 
   private baseUrl = "http://localhost:8080/data-service/"
-
-
   
   getRoleTypes(): Observable<string[]> {
     return of(['User','Manager','Admin'])
   }
-  
-
-  
+    
   getRoles(): Observable<Role[]> {
     return this.httpClient.get<Role[]>(this.baseUrl + "roles")
   }

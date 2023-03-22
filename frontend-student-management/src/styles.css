@@ -1,5 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap.min.css";
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+@import '~ngx-toastr/toastr';
+
+ html,
+body{
+ height: 100%;
+}
 
 .footer {
     position: absolute;
@@ -20,3 +27,21 @@
     text-align: center;
     color: black;
 }
+
+.success-snackbar {
+    text-align: center;
+    color: white;
+    background-color: rgb(25, 135, 84);
+}
+
+.error-snackbar {
+    text-align: center;
+    color: white;
+    background-color: rgb(165, 0, 0);
+}
+
+.warning-snackbar {
+    text-align: center;
+    color: white;
+    background-color: rgb(255, 95, 21);
+} 
