@@ -1,31 +1,83 @@
 <h2>Employee list</h2>
-<table class="table table-stripped">
-    <thead>
-        <tr>
-            <th> First name </th>
-            <th> Last name </th>
-            <th> E-mail </th>
-            <th> Role </th>
-        </tr>
-    </thead>
-    <tbody>
 
-        <div *ngIf="employees.length === 0; else elseBlock">
-            <h5>Add record</h5>
-        </div>
-        <ng-template #elseBlock>
+<form [formGroup]="registerForm">
 
-        <tr *ngFor="let employee of employees">
-            <td>{{employee.firstname}}</td>
-            <td>{{employee.lastname}}</td>
-            <td>{{employee.email}}</td>
-            <td>{{employee.role}}</td>
-            <td><button (click)="updateEmployee(employee.id)" class = "btn btn-primary">Update</button></td>
-            <td><button (click)="deleteEmployee(employee.id)" class = "btn btn-danger">Delete</button></td>
-        </tr>
 
-    </ng-template>
+    <table class="table table-stripped abid">
 
-    </tbody>
+        <thead>
+            <tr>
+                <th> First name </th>
+                <th> Last name </th>
+                <th> E-mail </th>
+                <th> Role </th>
+            </tr>
+        </thead>
+        <tbody>
 
-</table>
+            <div *ngIf="employees.length === 0; else elseBlock">
+                <h5>Add record</h5>
+            </div>
+            <ng-template #elseBlock>
+                <ng-container *ngFor="let employee of employees">
+
+                    <tr *ngIf="employee.exist">
+                        <td>{{employee.firstname}}</td>
+                        <td>{{employee.lastname}}</td>
+                        <td>{{employee.email}}</td>
+                        <td>{{employee.role}}</td>
+                        <td><button (click)="updateEmployee(employee.id)" class="btn btn-primary">Update</button></td>
+                        <td><button (click)="deleteEmployee(employee.id)" class="btn btn-danger">Delete</button></td>
+                    </tr>
+
+                    <tr *ngIf="!employee.exist">
+
+                        <td>
+                            <input type="text" class="form-control" id="firstname" formControlName="firstname">
+                            <div *ngIf="registerForm.get('firstname')?.invalid && (registerForm.get('firstname')?.dirty || registerForm.get('firstname')?.touched)"
+                                class="alert alert-danger">
+                                First name cannot be empty
+                            </div>
+                        </td>
+
+                        <td>
+                            <input type="text" class="form-control" id="lastname" formControlName="lastname">
+                            <div *ngIf="registerForm.get('lastname')?.invalid && (registerForm.get('lastname')?.dirty || registerForm.get('lastname')?.touched)"
+                                class="alert alert-danger">
+                                First name cannot be empty
+                            </div>
+                        </td>
+
+                        <td>
+                            <input type="text" class="form-control" id="email" formControlName="email">
+                            <div *ngIf="registerForm.get('email')?.invalid && (registerForm.get('email')?.dirty || registerForm.get('email')?.touched)"
+                                class="alert alert-danger">
+                                First name cannot be empty
+                            </div>
+                        </td>
+                        <td>
+                            <select class="form-select" formControlName="role">
+                                <option *ngFor="let type of roles" [value]="type.role">
+                                    {{type.role}}
+                                </option>
+                            </select>
+                        </td>
+
+                        <td><button class="btn btn-primary" (click)="onSubmit()" type="submit" [disabled]="!registerForm.valid">Create</button></td>
+                        <td><button class="btn btn-danger" (click)="removeNewRow()">Delete</button></td>
+
+                    </tr>
+                </ng-container>
+
+                <tr>
+                    <td>
+                        <button mat-raised-button (click)="addNewRow()"> + </button>
+                    </td>
+                </tr>
+
+            </ng-template>
+
+        </tbody>
+
+    </table>
+</form>

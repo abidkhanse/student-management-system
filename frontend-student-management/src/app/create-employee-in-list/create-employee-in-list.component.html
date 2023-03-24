@@ -1,0 +1,43 @@
+
+<div>
+    <tr >
+        <td>
+        <input type="text" class="form-control" id="firstname" formControlName="firstname">
+        <div *ngIf="registerForm?.get('firstname')?.invalid && (registerForm?.get('firstname')?.dirty || registerForm?.get('firstname')?.touched)"
+        class="alert alert-danger">
+        First name cannot be empty
+    </div>
+</td>
+
+<td>
+    <input type="text" class="form-control" id="lastname" formControlName="lastname">
+    <div *ngIf="registerForm?.get('lastname')?.invalid && (registerForm?.get('lastname')?.dirty || registerForm?.get('lastname')?.touched)"
+    class="alert alert-danger">
+    First name cannot be empty
+</div>
+</td>
+
+<td>
+    <input type="text" class="form-control" id="email" formControlName="email">
+        <div *ngIf="registerForm?.get('email')?.invalid && (registerForm?.get('email')?.dirty || registerForm?.get('email')?.touched)"
+        class="alert alert-danger">
+        First name cannot be empty
+    </div>
+</td>
+
+<td>
+    <select class="form-select" formControlName="role">
+            <option *ngFor="let type of roles" [value]="type.role">
+                {{type.role}}
+            </option>
+        </select>
+    </td> 
+    
+    <td><button class="btn btn-primary" (click)="onSubmit()" type="submit"
+        [disabled]="!registerForm?.valid">Create</button></td>
+<td><button class="btn btn-danger">Delete</button></td>
+
+</tr>
+
+
+</div>

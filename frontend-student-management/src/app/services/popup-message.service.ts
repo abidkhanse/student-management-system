@@ -43,10 +43,6 @@ messageWithAction(message: string, action: string) {
   });
 }
 
-
-
-
-
 //****** Custom message template starts *****/
 
   successMessage({ message }: { message: string; }) {

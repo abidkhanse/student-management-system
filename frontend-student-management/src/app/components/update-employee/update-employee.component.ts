@@ -99,7 +99,9 @@ export class UpdateEmployeeComponent implements OnInit {
           result => {
             if (this.registerForm.valid) {
 
-              this.popupService.successMessage({ message: this.registerForm.value.firstname + " user updated successfully" })
+              this.popupService.successMessage(
+                { message: this.registerForm.value.firstname + " user updated successfully" }
+                )
 
               console.log("successfully updated user with email: " + this.registerForm.valid)
               this.gotoEmployeeList();

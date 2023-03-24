@@ -57,7 +57,6 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy{
 
   onHttpError(e: any) {
 
-    console.log("Error: " + e.error.message)
     this.postError = true;
     this.postErrorMessage = e.error.message;
 
@@ -70,7 +69,6 @@ export class CreateEmployeeComponent implements OnInit, OnDestroy{
    onSubmit() {
 
     this.isSubmitted = true
-    console.log(this.registerForm)
 
     if (this.registerForm.valid) {
 
