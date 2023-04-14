@@ -48,7 +48,6 @@ messageWithAction(message: string, action: string) {
   successMessage({ message }: { message: string; }) {
     
     this.displayMessageWithComponenet({text:message, type:PopUpType.SUCCESS},"success-snackbar")
-  
     this.snackbar.open(message, '', { ...this.config, panelClass: "success-snackbar" });
   
   }
@@ -94,9 +93,9 @@ enum PopUpType {
   selector: 'custom-popup-message',
   template: `
   <span  > {{data?.text}} </span>
-  <mat-icon *ngIf="data?.type===PopUpType.ERROR" style="position:absolute;left:15px; bottom:12px" aria-label="Example home icon">error</mat-icon>
-  <mat-icon  *ngIf="data?.type===PopUpType.WARNING" style="position:absolute;left:15px; bottom:12px" aria-label="Example home icon">warning</mat-icon>
-  <mat-icon  *ngIf="data?.type===PopUpType.SUCCESS" style="position:absolute;left:15px; bottom:12px" aria-label="Example home icon">check_circle</mat-icon>
+  <mat-icon *ngIf="data?.type===PopUpType.ERROR" style="position:absolute;left:15px; bottom:12px" aria-label="Example home icon" fontIcon="error">error</mat-icon>
+  <mat-icon  *ngIf="data?.type===PopUpType.WARNING" style="position:absolute;left:15px; bottom:12px" aria-label="Example home icon" fontIcon="warning">warning</mat-icon>
+  <mat-icon  *ngIf="data?.type===PopUpType.SUCCESS" style="position:absolute;left:15px; bottom:12px" aria-label="Example home icon" fontIcon="home">home</mat-icon>
   <mat-icon  (click)="closeSnackBar()"  style="position:absolute;right:15px; bottom:12px" aria-label="Example home icon">clear</mat-icon>
   `
 })

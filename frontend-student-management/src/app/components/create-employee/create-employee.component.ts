@@ -15,7 +15,7 @@ import { PopupMessageService } from 'src/app/services/popup-message.service';
 })
 export class CreateEmployeeComponent implements OnInit, OnDestroy{
 
-  employee: Employee = {} as Employee;
+  
   roles : Role[] = []
   value?: string;
   postError = false;
